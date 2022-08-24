@@ -362,13 +362,13 @@ func (ssb *SectorSealer) FetchBytes(ctx context.Context,si storiface.SectorRef,s
 	if !b {
 		log.Warn("firstly reading piece error: ",err)
 
-		//if err = ssb.sb.UnsealPiece(context.TODO(), si, 0, pieceSize, ticket, unsealed); err != nil {
-		//	return nil, xerrors.Errorf("unsealing piece error: %+v", err)
-		//}
-		//
-		//if b, err = ssb.sb.ReadPiece(context.TODO(), &buf, si, 0, pieceSize); !b{
-		//	return nil, xerrors.Errorf("reading piece again error: %+v", err)
-		//}
+		if err = ssb.sb.UnsealPiece(context.TODO(), si, 0, pieceSize, ticket, unsealed); err != nil {
+			return nil, xerrors.Errorf("unsealing piece error: %+v", err)
+		}
+
+		if b, err = ssb.sb.ReadPiece(context.TODO(), &buf, si, 0, pieceSize); !b{
+			return nil, xerrors.Errorf("reading piece again error: %+v", err)
+		}
 	}
 
 
