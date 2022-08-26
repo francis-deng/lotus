@@ -352,6 +352,49 @@ func (ssb *SectorSealer) RemoveUnsealed(sector storiface.SectorRef) (err error) 
 	return nil
 }
 
+
+//piece_provider_test.go的readPiece
+//piece_provider.go的ReadPiece
+//remote.go的Reader
+/*
+func (ssb *SectorSealer) ReadUnsealedPiece(ctx context.Context, sector storiface.SectorRef, pieceOffset storiface.UnpaddedByteIndex, size abi.UnpaddedPieceSize) (mount.Reader, error){
+	ft := storiface.FTUnsealed
+	tartOffsetAligned := storiface.UnpaddedByteIndex(startOffset / 127 * 127)
+
+	paths, _, err := ssb.sp.AcquireSector(ctx, sector, storiface.FTUnsealed,storiface.FTNone, storiface.PathStorage)
+	if err != nil {
+		return nil, xerrors.Errorf("acquire local: %w", err)
+	}
+
+	path := storiface.PathByType(paths, ft)
+	if path != "" {
+		ssize, err := sector.ProofType.SectorSize()
+		if err != nil {
+			return nil, err
+		}
+
+		pf, err := partialfile.OpenPartialFile(abi.PaddedPieceSize(ssize), path)
+		if err != nil {
+			return nil, xerrors.Errorf("opening partial file: %w", err)
+		}
+
+		has, err := pf.HasAllocated(pf, storiface.UnpaddedByteIndex(offset.Unpadded()), size.Unpadded())
+		if err != nil {
+			return nil, xerrors.Errorf("has allocated: %w", err)
+		}
+		log.Debugf("check if partial file is allocated %s (+%d,%d)", path, offset, size)
+
+		if has {
+			r, err := pf.Reader(storiface.PaddedByteIndex(offset)+startOffsetAligned, size-abi.PaddedPieceSize(startOffsetAligned))
+			if err != nil {
+				return nil, err
+			}
+		}
+
+	}
+}
+*/
+
 func (ssb *SectorSealer) FetchBytes(ctx context.Context,si storiface.SectorRef,size uint64,pieceSize abi.UnpaddedPieceSize,ticket abi.SealRandomness,unsealed cid.Cid, done func()) (*bytes.Buffer, error) {
 	var buf bytes.Buffer
 
